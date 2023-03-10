@@ -28,7 +28,7 @@ contract Manager is ERC165, AccessControl {
         require(isAdmin(msg.sender), "Restricted to admins.");
         _;
     }
-    /// @dev Restricted to members of the mnager role.
+    /// @dev Restricted to members of the manager role.
     modifier onlyManager()
     {
         require(isManager(msg.sender), "Restricted to managers.");
