@@ -15,8 +15,9 @@ describe("Manager", function () {
   describe("Deployment", function () {
     it("Deployer should be an admin.", async function () {
       const { manager, owner } = await loadFixture(deployManager);
+      const defaultAdminRole = await manager.DEFAULT_ADMIN_ROLE();
 
-      expect(await manager.isAdmin(owner.address)).to.equal(true);
+      expect(await manager.hasRole(defaultAdminRole, owner.address)).to.equal(true);
     });
     it("Admin of the MANAGER_ROLE should be the DEFAULT_ADMIN_ROLE.", async function () {
       const { manager } = await loadFixture(deployManager);

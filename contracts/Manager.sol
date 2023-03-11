@@ -21,85 +21,46 @@ contract Manager is ERC165, AccessControl {
         return ERC165.supportsInterface(interfaceId) || AccessControl.supportsInterface(interfaceId);
     }
 
-    /// @dev Restricted to members of the admin role.
-    modifier onlyAdmin()
-    {
-        require(isAdmin(msg.sender), "Restricted to admins.");
-        _;
-    }
-    /// @dev Restricted to members of the manager role.
-    modifier onlyManager()
-    {
-        require(isManager(msg.sender), "Restricted to managers.");
-        _;
-    }
-
-    /// @dev Return `true` if the account belongs to the admin role.
-    function isAdmin(address account) public virtual view returns (bool)
-    {
-        return hasRole(DEFAULT_ADMIN_ROLE, account);
-    }
-    /// @dev Return `true` if the account belongs to the manager role.
-    function isManager(address account) public virtual view returns (bool)
-    {
-        return hasRole(MANAGER_ROLE, account);
-    }
-    /// @dev Return `true` if the account belongs to the donator role.
-    function isDonator(address account) public virtual view returns (bool)
-    {
-        return hasRole(DONATOR_ROLE, account);
-    }
-    /// @dev Return `true` if the account belongs to the vendor role.
-    function isVendor(address account) public virtual view returns (bool)
-    {
-        return hasRole(VENDOR_ROLE, account);
-    }
-    /// @dev Return `true` if the account belongs to the viewer role.
-    function isViewer(address account) public virtual view returns (bool)
-    {
-        return hasRole(VIEWER_ROLE, account);
-    }
-
     /// @dev Add an account to the manager role. Restricted to admins.
-    function addManager(address account) public virtual onlyAdmin
+    function addManager(address account) public virtual onlyRole(DEFAULT_ADMIN_ROLE)
     {
         grantRole(MANAGER_ROLE, account);
     }
     /// @dev Remove an account from the manager role. Restricted to admins.
-    function removeManager(address account) public virtual onlyAdmin
+    function removeManager(address account) public virtual onlyRole(DEFAULT_ADMIN_ROLE)
     {
         revokeRole(MANAGER_ROLE, account);
     }
     
     /// @dev Add an account to the Donator role. Restricted to managers.
-    function addDonator(address account) public virtual onlyManager
+    function addDonator(address account) public virtual onlyRole(MANAGER_ROLE)
     {
         grantRole(DONATOR_ROLE, account);
     }
     /// @dev Remove an account from the Donator role. Restricted to managers.
-    function removeDonator(address account) public virtual onlyManager
+    function removeDonator(address account) public virtual onlyRole(MANAGER_ROLE)
     {
         revokeRole(DONATOR_ROLE, account);
     }
     
     /// @dev Add an account to the Vendor role. Restricted to managers.
-    function addVendor(address account) public virtual onlyManager
+    function addVendor(address account) public virtual onlyRole(MANAGER_ROLE)
     {
         grantRole(VENDOR_ROLE, account);
     }
     /// @dev Remove an account from the Vendor role. Restricted to managers.
-    function removeVendor(address account) public virtual onlyManager
+    function removeVendor(address account) public virtual onlyRole(MANAGER_ROLE)
     {
         revokeRole(VENDOR_ROLE, account);
     }
     
     /// @dev Add an account to the Viewer role. Restricted to managers.
-    function addViewer(address account) public virtual onlyManager
+    function addViewer(address account) public virtual onlyRole(MANAGER_ROLE)
     {
         grantRole(VIEWER_ROLE, account);
     }
     /// @dev Remove an account from the Viewer role. Restricted to managers.
-    function removeViewer(address account) public virtual onlyManager
+    function removeViewer(address account) public virtual onlyRole(MANAGER_ROLE)
     {
         revokeRole(VIEWER_ROLE, account);
     }
