@@ -17,9 +17,8 @@ contract Manager is ERC165, AccessControl {
         _setRoleAdmin(VIEWER_ROLE, MANAGER_ROLE);
     }
 
-    //do we readlly need this? As both ERC165 and AccessControl implements it.
     function supportsInterface(bytes4 interfaceId) public view virtual override(AccessControl, ERC165) returns (bool) {
-        return interfaceId == type(IERC165).interfaceId || interfaceId == type(IAccessControl).interfaceId;
+        return ERC165.supportsInterface(interfaceId) || AccessControl.supportsInterface(interfaceId);
     }
 
     /// @dev Restricted to members of the admin role.
