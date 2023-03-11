@@ -1,6 +1,7 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "dotenv/config";
+import 'solidity-coverage'
 
 const DEV_ACCOUNT_PRIVATE_KEY = process.env.DEV_ACCOUNT_PRIVATE_KEY || "";
 
