@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
-import "./Register.sol";
-
-contract Project is Register {
+contract Project {
 
     mapping(address => bool) whitelistedVendors;
     mapping(address => bool) whitelistedViewers;

@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
-import "./Manager.sol";
-
-contract Register is Manager {
+contract Register {
 
     mapping(address => bool) whitelistedDonators;
 
