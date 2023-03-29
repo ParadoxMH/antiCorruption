@@ -38,6 +38,8 @@ contract Register is Ownable {
     }
 
     function whitelistDonator(address _donator) public onlyRole(manager.MANAGER_ROLE()) {
+        require(_donator != address(0), "Invalid address provided");
+        require(!whitelistedDonators[_donator], "Address already whitelisted");
         require(manager.hasRole(manager.DONATOR_ROLE(), _donator), 'Only Donator address can be whitelisted.');
         whitelistedDonators[_donator] = true;
     }

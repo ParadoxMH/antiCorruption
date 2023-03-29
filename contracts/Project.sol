@@ -39,6 +39,8 @@ contract Project is Ownable {
     }
 
     function whitelistVendor(address _vendor) public onlyRole(manager.MANAGER_ROLE()) {
+        require(_vendor != address(0), "Invalid address provided");
+        require(!whitelistedVendors[_vendor], "Address already whitelisted");
         require(manager.hasRole(manager.VENDOR_ROLE(), _vendor), 'Only Vendor address can be whitelisted.');
         whitelistedVendors[_vendor] = true;
     }
@@ -50,6 +52,8 @@ contract Project is Ownable {
     }
 
     function whitelistViewer(address _viewer) public onlyRole(manager.MANAGER_ROLE()) {
+        require(_viewer != address(0), "Invalid address provided");
+        require(!whitelistedViewers[_viewer], "Address already whitelisted");
         require(manager.hasRole(manager.VIEWER_ROLE(), _viewer), 'Only Viewer address can be whitelisted.');
         whitelistedViewers[_viewer] = true;
     }
