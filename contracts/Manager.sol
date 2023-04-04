@@ -3,6 +3,7 @@ pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
+import "./Register.sol";
 
 contract Manager is ERC165, AccessControl {
     bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
@@ -10,8 +11,11 @@ contract Manager is ERC165, AccessControl {
     bytes32 public constant VENDOR_ROLE = keccak256("VENDOR_ROLE");
     bytes32 public constant VIEWER_ROLE = keccak256("VIEWER_ROLE");
 
+    Register[] public registers;
+
     constructor() {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        addManager(msg.sender);
         _setRoleAdmin(DONATOR_ROLE, MANAGER_ROLE);
         _setRoleAdmin(VENDOR_ROLE, MANAGER_ROLE);
         _setRoleAdmin(VIEWER_ROLE, MANAGER_ROLE);
@@ -63,5 +67,32 @@ contract Manager is ERC165, AccessControl {
     function removeViewer(address account) public virtual onlyRole(MANAGER_ROLE)
     {
         revokeRole(VIEWER_ROLE, account);
+    }
+    
+    function createRegister(address[] calldata managers, address[] calldata vendors, address[] calldata donators, address[] calldata viewiers) public payable onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        Register register = new Register{value: 111}(address(this));
+        registers.push(register);
+
+        if(managers.length > 0){
+            for (uint i = 0; i < managers.length; i++) {
+                addManager(managers[i]);
+            }   
+        }
+        if(managers.length > 0){
+            for (uint i = 0; i < vendors.length; i++) {
+                addVendor(vendors[i]);
+            }
+        }
+        if(managers.length > 0){ 
+            for (uint i = 0; i < donators.length; i++) {
+                addDonator(donators[i]);
+            }
+        }
+        if(managers.length > 0){
+            for (uint i = 0; i < viewiers.length; i++) {
+                addViewer(viewiers[i]);
+            } 
+        }
     }
 }

@@ -2,6 +2,7 @@
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 import "./Manager.sol";
 
 contract Register is Ownable {
@@ -9,7 +10,7 @@ contract Register is Ownable {
     mapping(address => bool) public whitelistedDonators;
     Manager manager;
 
-    constructor(address _manager) {
+    constructor(address _manager) payable {
         manager = Manager(_manager);
     }
 
