@@ -4,8 +4,9 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "./Register.sol";
+import "./interfaces/IManager.sol";
 
-contract Manager is ERC165, AccessControl {
+contract Manager is ERC165, AccessControl, IManager {
     bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
     bytes32 public constant DONATOR_ROLE = keccak256("DONATOR_ROLE");
     bytes32 public constant VENDOR_ROLE = keccak256("VENDOR_ROLE");
@@ -22,7 +23,11 @@ contract Manager is ERC165, AccessControl {
     }
 
     function supportsInterface(bytes4 interfaceId) public view virtual override(AccessControl, ERC165) returns (bool) {
-        return ERC165.supportsInterface(interfaceId) || AccessControl.supportsInterface(interfaceId);
+        return ERC165.supportsInterface(interfaceId) || AccessControl.supportsInterface(interfaceId) || interfaceId == type(IManager).interfaceId;
+    }
+    
+    function hasRole(bytes32 role, address account) public view override(AccessControl, IManager) returns (bool) {
+        return AccessControl.hasRole(role, account);
     }
 
     /// @dev Add an account to the manager role. Restricted to admins.
