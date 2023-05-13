@@ -11,3 +11,8 @@ REPORT_GAS=true npx hardhat test
 npx hardhat node
 npx hardhat run scripts/deploy.ts
 ```
+
+How to deploy:
+
+1. Deploy `ManagerStorage` and `RegisterFactory`.
+2. Using contact addresses from step 1, deploy `Manager`.

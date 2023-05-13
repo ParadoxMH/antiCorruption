@@ -3,13 +3,16 @@ pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./interfaces/IManager.sol";
+import "./interfaces/IManagerStorage.sol";
 
 abstract contract ManagerAdapter { //or ManagerWrapper?
 
-    mapping(string => address) dataAddress;
+    address managerAddress;
+    address managerStorageAddress;
 
-    constructor (address _manager)  {
-        dataAddress["manager"] = _manager;
+    constructor (address _manager, address _managerStorage)  {
+        managerAddress = _manager;
+        managerStorageAddress = _managerStorage;
     }
     
     // do we need this func? then we'll need to `is Ownable` here
@@ -18,11 +21,14 @@ abstract contract ManagerAdapter { //or ManagerWrapper?
     // }
 
     function manager() internal view returns (IManager) {
-        return IManager(dataAddress["manager"]);
+        return IManager(managerAddress);
+    }
+    function managerStorage() internal view returns (IManagerStorage) {
+        return IManagerStorage(managerStorageAddress);
     }
     
     modifier onlyRole(bytes32 role) {
-        _checkRole(role, msg.sender);
+        _checkRole(role, tx.origin);
         _;
     }
 
