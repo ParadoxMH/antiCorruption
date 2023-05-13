@@ -8,6 +8,11 @@ const DEV_ACCOUNT_PRIVATE_KEY = process.env.DEV_ACCOUNT_PRIVATE_KEY || "";
 const config: HardhatUserConfig = {
   solidity: "0.8.18",
   networks: {
+    hardhat: {
+      gas: 12000000,
+      blockGasLimit: 0x1fffffffffffff,
+      allowUnlimitedContractSize: true
+    },
     //npx hardhat run scripts/deploy.ts --network polygon
     polygon: {
       url: `https://polygon-mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`,
