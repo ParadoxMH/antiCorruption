@@ -164,4 +164,18 @@ describe("Manager", function () {
         expect(await manager.hasRole(managerStorage.VIEWER_ROLE(), otherAccount.address)).to.equal(false);
     });
   });
+  
+  describe("Create Register", function () {
+    it("Register should be created and added to array", async function () {
+      const { manager, managerStorage, registerFactory, otherAccount } = await loadFixture(deployManager);
+
+      await manager.createRegister([otherAccount.address], [otherAccount.address], [otherAccount.address], [otherAccount.address], {value: ethers.utils.parseEther("222")});
+
+      expect(await managerStorage.registers(0)).to.be.not.empty;
+      expect(await manager.hasRole(managerStorage.MANAGER_ROLE(), otherAccount.address)).to.be.true;
+      expect(await manager.hasRole(managerStorage.VIEWER_ROLE(), otherAccount.address)).to.be.true;
+      expect(await manager.hasRole(managerStorage.DONATOR_ROLE(), otherAccount.address)).to.be.true;
+      expect(await manager.hasRole(managerStorage.VENDOR_ROLE(), otherAccount.address)).to.be.true;
+    });
+  });
 });
