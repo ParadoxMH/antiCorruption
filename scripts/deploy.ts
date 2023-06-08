@@ -1,19 +1,34 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
+  var managerStorage = await deployManagerStorage();
+  var registerFactory = await deployRegisterFactory();
 
-  const lockedAmount = ethers.utils.parseEther("0.00001");
+  await deployManager(managerStorage.address, registerFactory.address);
+}
+async function deployManagerStorage() { 
+  const ManagerStorage = await ethers.getContractFactory("ManagerStorage");
+  const ctract = await ManagerStorage.deploy();
 
-  const Lock = await ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
+  console.log(`ManagerStorage deployed to ${ctract.address}`);
 
-  await lock.deployed();
+  return ctract;
+}
+async function deployRegisterFactory() {
+  const RegisterFactory = await ethers.getContractFactory("RegisterFactory");
+  const ctract = await RegisterFactory.deploy();
 
-  console.log(
-    `Lock with ${ethers.utils.formatEther(lockedAmount)}ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
-  );
+  console.log(`RegisterFactory deployed to ${ctract.address}`);
+
+  return ctract;
+}
+async function deployManager(managerStorage: string, registerFactory: string) { 
+  const Manager = await ethers.getContractFactory("Manager");
+  const manager = await Manager.deploy(managerStorage, registerFactory);
+
+  console.log(`Manager deployed to ${manager.address}`);
+
+  return manager;
 }
 
 // We recommend this pattern to be able to use async/await everywhere
